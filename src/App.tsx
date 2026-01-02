@@ -203,7 +203,7 @@ function App() {
   );
 
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} forceColorScheme="dark">
       <Notifications position="top-right" />
       <Background>
         <LoadingOverlay

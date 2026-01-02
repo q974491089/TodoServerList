@@ -7,6 +7,7 @@ import {
   Anchor,
   Tooltip,
   ActionIcon,
+  Button,
 } from "@mantine/core";
 import {
   IconCheck,
@@ -14,11 +15,11 @@ import {
   IconExternalLink,
   IconClock,
   IconEdit,
+  IconBan,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import type { Todo } from "../types";
 import { isTodoOverdue } from "../utils/utils";
-import { ShimmerButton } from "./ui/shimmer-button";
 
 interface TodoCardProps {
   todo: Todo;
@@ -46,7 +47,7 @@ export function TodoCard({ todo, onComplete, onEdit }: TodoCardProps) {
       <Stack gap="sm">
         <Group justify="space-between" align="flex-start">
           <div style={{ flex: 1 }}>
-            <Group gap="xs" mb={4}>
+            <Group gap="xs" mb={4} wrap="wrap" align="center">
               <Anchor
                 href={todo.link}
                 target="_blank"
@@ -54,15 +55,15 @@ export function TodoCard({ todo, onComplete, onEdit }: TodoCardProps) {
                 size="lg"
                 fw={600}
                 style={{
-                  color: "inherit",
+                  color: "#fff",
                   textDecoration: isCompleted ? "line-through" : undefined,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
                 }}
               >
                 {todo.title}
-                <IconExternalLink
-                  size={16}
-                  style={{ marginLeft: 4, verticalAlign: "middle" }}
-                />
+                <IconExternalLink size={16} />
               </Anchor>
               {todo.isRecurring && (
                 <Tooltip label={`每 ${todo.recurringDays} 天循环`}>
@@ -105,29 +106,51 @@ export function TodoCard({ todo, onComplete, onEdit }: TodoCardProps) {
             </Group>
           </div>
 
-          <Group gap="xs">
+          <Group gap="sm">
             <ActionIcon
               variant="subtle"
-              color="blue"
+              size="lg"
+              radius="md"
               onClick={() => onEdit(todo)}
               disabled={isCompleted}
+              style={{
+                color: isCompleted
+                  ? "rgba(255, 255, 255, 0.3)"
+                  : "rgba(255, 255, 255, 0.85)",
+                backgroundColor: isCompleted
+                  ? "transparent"
+                  : "rgba(255, 255, 255, 0.1)",
+                transition: "all 0.2s ease",
+              }}
             >
-              <IconEdit size={20} />
+              <IconEdit size={18} />
             </ActionIcon>
-            <ShimmerButton
-              onClick={() => onComplete(todo.id)}
-              className="h-8 px-4 text-sm"
-              shimmerColor={isCompleted ? "#4ade80" : "#ffffff"}
-              background={
-                isCompleted
-                  ? "linear-gradient(110deg, #14532d 0%, #166534 100%)"
-                  : "rgba(0, 0, 0, 1)"
-              }
-              disabled={isCompleted}
-            >
-              <IconCheck size={16} />
-              {isCompleted ? "已完成" : "完成"}
-            </ShimmerButton>
+            <Tooltip label="今日已完成" disabled={!isCompleted} withArrow>
+              <Button
+                onClick={() => onComplete(todo.id)}
+                variant="gradient"
+                gradient={
+                  isCompleted
+                    ? { from: "gray.6", to: "gray.5", deg: 105 }
+                    : { from: "teal", to: "lime", deg: 105 }
+                }
+                radius="md"
+                size="sm"
+                leftSection={
+                  isCompleted ? <IconBan size={16} /> : <IconCheck size={16} />
+                }
+                disabled={isCompleted}
+                style={{
+                  transition: "all 0.2s ease",
+                  boxShadow: isCompleted
+                    ? "none"
+                    : "0 4px 14px 0 rgba(0, 200, 100, 0.3)",
+                  opacity: isCompleted ? 0.6 : 1,
+                }}
+              >
+                {isCompleted ? "已完成" : "完成"}
+              </Button>
+            </Tooltip>
           </Group>
         </Group>
       </Stack>
