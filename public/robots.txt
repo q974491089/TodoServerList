@@ -1,0 +1,26 @@
+# robots.txt for To-Do Server List
+# https://todoserverlist.xyls.us.kg/
+
+# 允许所有搜索引擎爬虫访问
+User-agent: *
+Allow: /
+
+# 禁止爬取的路径（如有需要可添加）
+# Disallow: /api/
+# Disallow: /admin/
+
+# Sitemap 位置
+Sitemap: https://todoserverlist.xyls.us.kg/sitemap.xml
+
+# 爬取延迟（可选，单位秒）
+# Crawl-delay: 10
+
+# 特定搜索引擎规则
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
